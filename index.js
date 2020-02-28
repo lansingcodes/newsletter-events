@@ -9,9 +9,11 @@ const firebaseConfig = {
 }
 const firestore = firebase.initializeApp(firebaseConfig).firestore()
 
-const firstOfNextMonth = moment().add(0, 'month').startOf('month').startOf('day')
+const firstOfNextMonth = moment().add(1, 'month').startOf('month').startOf('day')
 const endOfNextMonth = moment(firstOfNextMonth).endOf('month').endOf('day')
 const eventList = document.getElementById('event-list')
+
+document.getElementById('month').innerHTML = firstOfNextMonth.format('MMMM')
 
 firestore
   .collection('events')
