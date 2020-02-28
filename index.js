@@ -24,10 +24,12 @@ firestore
   .then(snapshot => {
     snapshot.forEach(doc => {
       const event = doc.data()
-      const when = moment(event.startTime).format('ddd. MMM. D [at] h:mm')
+      const when = moment(event.startTime)
+        .format('ddd. MMM. D [at] h:mm a')
+        .replace(':00', '')
       const link = `<a href="${event.url}">${event.name}</a>`
       const li = document.createElement('li')
-      li.innerHTML = `${when} - ${link}`
+      li.innerHTML = `<code>${when}</code> - ${link}`
       eventList.appendChild(li)
     })
   })
