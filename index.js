@@ -9,9 +9,13 @@ const firebaseConfig = {
 }
 const firestore = firebase.initializeApp(firebaseConfig).firestore()
 
+//
+// Compile next month's events
+//
+
 const firstOfNextMonth = moment().add(1, 'month').startOf('month').startOf('day')
 const endOfNextMonth = moment(firstOfNextMonth).endOf('month').endOf('day')
-const eventList = document.getElementById('next-month-event-list')
+const nextMonthEventList = document.getElementById('next-month-event-list')
 
 document.getElementById('next-month-name').innerHTML = firstOfNextMonth.format('MMMM')
 
@@ -30,6 +34,35 @@ firestore
       const link = `<a href="${event.url}">${event.name}</a>`
       const li = document.createElement('li')
       li.innerHTML = `<code>${when}</code> - ${link}`
-      eventList.appendChild(li)
+      nextMonthEventList.appendChild(li)
+    })
+  })
+
+//
+// Compile this month's events
+//
+
+const firstOfCurrentMonth = moment().startOf('month').startOf('day')
+const endOfCurrentMonth = moment(firstOfCurrentMonth).endOf('month').endOf('day')
+const currentMonthEventList = document.getElementById('current-month-event-list')
+
+document.getElementById('current-month-name').innerHTML = firstOfCurrentMonth.format('MMMM')
+
+firestore
+  .collection('events')
+  .where('startTime', '>=', firstOfCurrentMonth.valueOf())
+  .where('startTime', '<=', endOfCurrentMonth.valueOf())
+  .orderBy('startTime', 'asc')
+  .get()
+  .then(snapshot => {
+    snapshot.forEach(doc => {
+      const event = doc.data()
+      const when = moment(event.startTime)
+        .format('ddd. MMM. D [at] h:mm a')
+        .replace(':00', '')
+      const link = `<a href="${event.url}">${event.name}</a>`
+      const li = document.createElement('li')
+      li.innerHTML = `<code>${when}</code> - ${link}`
+      currentMonthEventList.appendChild(li)
     })
   })
