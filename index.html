@@ -4,11 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Lansing Codes: Next month's events</title>
+  <title>Lansing Codes Monthly Events</title>
 </head>
 <body>
-  <h1><span id="month"></span> Events</h1>
-  <ul id="event-list"></ul>
+  <h1>Lansing Codes Monthly Events</h1>
+
+  <h2><span id="next-month-name"></span> Events</h2>
+  <ul id="next-month-event-list"></ul>
+
+  <h2><span id="current-month-name"></span> Events</h2>
+  <ul id="current-month-event-list"></ul>
+
   <script src="https://www.gstatic.com/firebasejs/6.4.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.1/firebase-firestore.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
