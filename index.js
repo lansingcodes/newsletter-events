@@ -9,20 +9,18 @@ const firebaseConfig = {
 }
 const firestore = firebase.initializeApp(firebaseConfig).firestore()
 
-//
-// Compile next month's events
-//
-
-const firstOfNextMonth = moment().add(1, 'month').startOf('month').startOf('day')
-const endOfNextMonth = moment(firstOfNextMonth).endOf('month').endOf('day')
-const nextMonthEventList = document.getElementById('next-month-event-list')
-
-document.getElementById('next-month-name').innerHTML = firstOfNextMonth.format('MMMM')
-
-firestore
+function compileEventList (monthMoment, nameId, listId) {
+  const firstOfMonth = monthMoment.startOf('month').startOf('day')
+  const endOfMonth = moment(firstOfMonth).endOf('month').endOf('day')
+  const eventListEl = document.getElementById(listId)
+  const monthNameEl = document.getElementById(nameId)
+  
+  monthNameEl.innerHTML = firstOfMonth.format('MMMM')
+  
+  firestore
   .collection('events')
-  .where('startTime', '>=', firstOfNextMonth.valueOf())
-  .where('startTime', '<=', endOfNextMonth.valueOf())
+  .where('startTime', '>=', firstOfMonth.valueOf())
+  .where('startTime', '<=', endOfMonth.valueOf())
   .orderBy('startTime', 'asc')
   .get()
   .then(snapshot => {
@@ -34,35 +32,10 @@ firestore
       const link = `<a href="${event.url}">${event.name}</a>`
       const li = document.createElement('li')
       li.innerHTML = `<code>${when}</code> - ${link}`
-      nextMonthEventList.appendChild(li)
+      eventListEl.appendChild(li)
     })
   })
+}
 
-//
-// Compile this month's events
-//
-
-const firstOfCurrentMonth = moment().startOf('month').startOf('day')
-const endOfCurrentMonth = moment(firstOfCurrentMonth).endOf('month').endOf('day')
-const currentMonthEventList = document.getElementById('current-month-event-list')
-
-document.getElementById('current-month-name').innerHTML = firstOfCurrentMonth.format('MMMM')
-
-firestore
-  .collection('events')
-  .where('startTime', '>=', firstOfCurrentMonth.valueOf())
-  .where('startTime', '<=', endOfCurrentMonth.valueOf())
-  .orderBy('startTime', 'asc')
-  .get()
-  .then(snapshot => {
-    snapshot.forEach(doc => {
-      const event = doc.data()
-      const when = moment(event.startTime)
-        .format('ddd. MMM. D [at] h:mm a')
-        .replace(':00', '')
-      const link = `<a href="${event.url}">${event.name}</a>`
-      const li = document.createElement('li')
-      li.innerHTML = `<code>${when}</code> - ${link}`
-      currentMonthEventList.appendChild(li)
-    })
-  })
+compileEventList(moment().add(1, 'month'), 'next-month-name', 'next-month-event-list')
+compileEventList(moment(), 'current-month-name', 'current-month-event-list')
