@@ -1,15 +1,13 @@
-# Lansing Codes website
+# Upcoming Newsletter Events
 
-[Lansing Codes](https://www.lansing.codes) is a website of resources for coders
-and other tech enthusiasts in and around Lansing, Michigan.
-
-These resources include a calendar of tech events, a list of meetup groups,
-local beginner-friendly resources, shout-outs of our gracious sponsors, and
-other ways to get involved in the Lansing tech community.
+This website shows upcoming events from the
+[Lansing Codes API](https://github.com/lansingcodes/api)
+in lists that can be easily copied and pasted into a monthly newsletter.
 
 ## Code of Conduct
-All participants are expected to treat others with respect and follow our [Code of Conduct](https://www.lansing.codes/code-of-conduct/).
 
+All participants are expected to treat others with respect and follow our
+[Code of Conduct](https://www.lansing.codes/code-of-conduct/).
 
 ## Questions
 
