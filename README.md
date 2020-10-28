@@ -22,3 +22,9 @@ project is exclusively for bug reports and feature requests.
 - [Facebook](https://www.facebook.com/lansingcodes)
 - [Website](https://www.lansing.codes)
 - [Newsletter](http://bit.ly/lansing-codes-newsletter)
+
+## License
+
+[Hippocratic 2.1](https://firstdonoharm.dev)
+
+Copyright (c) 2020-Present, Humanity Codes LLC
