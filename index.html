@@ -9,11 +9,24 @@
 <body>
   <h1>Lansing Codes Monthly Events</h1>
 
-  <h2><span id="next-month-name"></span> Events</h2>
-  <ul id="next-month-event-list"></ul>
+  <label for="date-format">Date Format:</label>
+  <input type="text" id="date-format" size="40" value="Do (ddd) h:mm a">
+  <input type="button" id="refresh-format" value="Update">
+  <aside>
+    <a href="https://momentjs.com/docs/#/displaying/format/">
+      Moment.js Formatting Documentation
+    </a>
+  </aside>
 
-  <h2><span id="current-month-name"></span> Events</h2>
-  <ul id="current-month-event-list"></ul>
+  <section>
+    <h2><span id="next-month-name"></span> Events</h2>
+    <ul id="next-month-event-list"></ul>
+  </section>
+
+  <section>
+    <h2><span id="current-month-name"></span> Events</h2>
+    <ul id="current-month-event-list"></ul>
+  </section>
 
   <script src="https://www.gstatic.com/firebasejs/6.4.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/6.4.1/firebase-firestore.js"></script>

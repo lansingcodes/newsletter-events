@@ -11,12 +11,15 @@ const firebaseConfig = {
 const firestore = firebase.initializeApp(firebaseConfig).firestore()
 
 function compileEventList (monthMoment, nameId, listId) {
+  const dateFormat = document.getElementById('date-format').value
   const firstOfMonth = monthMoment.startOf('month').startOf('day')
   const endOfMonth = moment(firstOfMonth).endOf('month').endOf('day')
-  const eventListEl = document.getElementById(listId)
-  const monthNameEl = document.getElementById(nameId)
 
+  const monthNameEl = document.getElementById(nameId)
   monthNameEl.innerHTML = firstOfMonth.format('MMMM')
+
+  const eventListEl = document.getElementById(listId)
+  eventListEl.innerHTML = ''
 
   firestore
     .collection('events')
@@ -28,7 +31,7 @@ function compileEventList (monthMoment, nameId, listId) {
       snapshot.forEach(doc => {
         const event = doc.data()
         const when = moment(event.startTime)
-          .format('ddd. MMM. D [at] h:mm a')
+          .format(dateFormat)
           .replace(':00', '')
         const link = `<a href="${event.url}">${event.name}</a>`
         const li = document.createElement('li')
@@ -38,5 +41,20 @@ function compileEventList (monthMoment, nameId, listId) {
     })
 }
 
-compileEventList(moment().add(1, 'month'), 'next-month-name', 'next-month-event-list')
-compileEventList(moment(), 'current-month-name', 'current-month-event-list')
+function refreshEventLists () {
+  compileEventList(
+    moment().add(1, 'month'),
+    'next-month-name',
+    'next-month-event-list'
+  )
+  compileEventList(
+    moment(),
+    'current-month-name',
+    'current-month-event-list'
+  )
+}
+
+const refreshFormatButton = document.getElementById('refresh-format')
+refreshFormatButton.addEventListener('click', refreshEventLists)
+
+refreshEventLists()
