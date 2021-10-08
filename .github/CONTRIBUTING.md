@@ -4,7 +4,7 @@ Hi! We're really excited that you are interested in contributing to our tech
 community tools. Before submitting your contribution, please make sure to read
 through these guidelines.
 
-- [Code of Conduct](https://newsletter-events.lansing.codes/code-of-conduct/)
+- [Code of Conduct](https://www.lansing.codes/code-of-conduct/)
 - [Issue Reporting Guidelines](#issue-reporting-guidelines)
 - [Pull Request Guidelines](#pull-request-guidelines)
 - [Development Setup](#development-setup)
@@ -313,7 +313,7 @@ git fetch origin && git push --force origin origin/main:production
 ```
 
 This will trigger another build and deployment by Netlify. The site will be
-published to [newsletter-events.lansing.codes](https://newsletter-events.lansing.codes).
+published to [www.lansing.codes](https://www.lansing.codes).
 
 For both the staging and production sites, Netlify runs the command
 `npm run build` to build the site and deploys the contents of the `/dist`
