@@ -2,8 +2,11 @@ import { fetchEvents } from './events.js'
 import { appendEvent } from './render.js'
 
 const moment = window.moment
+const latestLoadByList = new Map()
 
 async function compileEventList(monthMoment, nameId, listId) {
+  const loadId = (latestLoadByList.get(listId) || 0) + 1
+  latestLoadByList.set(listId, loadId)
   const dateFormat = document.getElementById('date-format').value
   const firstOfMonth = monthMoment.startOf('month').startOf('day')
   const endOfMonth = moment(firstOfMonth).endOf('month').endOf('day')
@@ -16,11 +19,13 @@ async function compileEventList(monthMoment, nameId, listId) {
 
   try {
     const events = await fetchEvents(firstOfMonth.valueOf(), endOfMonth.valueOf())
+    if (latestLoadByList.get(listId) !== loadId) return
     for (const event of events) {
       const when = moment(event.startTime).format(dateFormat).replace(':00', '')
       appendEvent(eventListEl, event, when)
     }
   } catch (error) {
+    if (latestLoadByList.get(listId) !== loadId) return
     const message = document.createElement('li')
     message.textContent = 'Events could not be loaded. Please try again.'
     eventListEl.append(message)
