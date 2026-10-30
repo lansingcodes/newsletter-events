@@ -33,11 +33,15 @@ test('older event loads cannot append stale dates or errors after a refresh', as
     pending[2].resolve(response())
     pending[3].resolve(response())
     await new Promise((resolve) => setImmediate(resolve))
+    assert.equal(document.getElementById('copy-email').disabled, false)
+    assert.match(document.getElementById('email-preview').srcdoc, /NEW/)
 
     // The startup loads finish late: one succeeds and one fails.
     pending[0].reject(new Error('stale request failed'))
     pending[1].resolve(response())
     await new Promise((resolve) => setImmediate(resolve))
+    assert.equal(document.getElementById('copy-email').disabled, false)
+    assert.match(document.getElementById('email-preview').srcdoc, /NEW/)
 
     for (const id of ['next-month-event-list', 'current-month-event-list']) {
       const list = document.getElementById(id)

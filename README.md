@@ -13,6 +13,18 @@ and run `npm ci && npm test` to check the month query, Firestore response
 parsing, and safe event link rendering. `vendor/moment.min.js` is the local
 Moment 2.31.0 browser build, with its license alongside it.
 
+## Prepare a branded newsletter
+
+Open the page and check the current and next month event lists against the
+Meetup links. The branded email preview uses those same event records and date
+format. **Copy formatted email** copies HTML and a plain-text alternative;
+**Download HTML** saves the complete HTML for Mailchimp's custom-code editor.
+Send a Mailchimp test email to yourself and check its layout, links, and
+unsubscribe footer before sending a campaign. The footer contains Mailchimp
+merge tags that Mailchimp replaces when it sends the email. The page reads
+public Lansing Codes Firestore data and does not update a mailing list or send
+email itself.
+
 ## Code of Conduct
 
 All participants are expected to treat others with respect and follow our
