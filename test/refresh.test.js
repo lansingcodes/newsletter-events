@@ -49,6 +49,31 @@ test('older event loads cannot append stale dates or errors after a refresh', as
       assert.match(list.textContent, /^NEW .*Race test$/)
       assert.doesNotMatch(list.textContent, /could not be loaded/)
     }
+
+    const previousCreate = URL.createObjectURL
+    const previousRevoke = URL.revokeObjectURL
+    const previousClick = dom.window.HTMLAnchorElement.prototype.click
+    const previousTimeout = globalThis.setTimeout
+    let downloaded
+    let blob
+    try {
+      URL.createObjectURL = value => { blob = value; return 'blob:test-newsletter' }
+      URL.revokeObjectURL = () => {}
+      dom.window.HTMLAnchorElement.prototype.click = function () { downloaded = { href: this.href, name: this.download } }
+      globalThis.setTimeout = (callback, delay) => {
+        assert.equal(delay, 60000)
+        callback()
+      }
+      document.getElementById('download-email').click()
+      assert.deepEqual(downloaded, { href: 'blob:test-newsletter', name: 'lansing-codes-newsletter.html' })
+      assert.match(await blob.text(), /Race test/)
+      assert.match(blob.type, /^text\/html/)
+    } finally {
+      URL.createObjectURL = previousCreate
+      URL.revokeObjectURL = previousRevoke
+      dom.window.HTMLAnchorElement.prototype.click = previousClick
+      globalThis.setTimeout = previousTimeout
+    }
   } finally {
     globalThis.window = previous.window
     globalThis.document = previous.document
