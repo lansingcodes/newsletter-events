@@ -1,0 +1,30 @@
+{
+  "name": "newsletter-events",
+  "version": "1.0.0",
+  "description": "Upcoming Lansing Codes events for the monthly newsletter",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 8000 --bind 127.0.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lansingcodes/newsletter-events.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Hippocratic-2.1",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/lansingcodes/newsletter-events/issues"
+  },
+  "homepage": "https://github.com/lansingcodes/newsletter-events#readme",
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "moment": "^2.31.0",
+    "moment-timezone": "0.6.5"
+  },
+  "engines": {
+    "node": ">=24.15.0"
+  }
+}

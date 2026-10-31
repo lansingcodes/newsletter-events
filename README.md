@@ -1,8 +1,17 @@
 # Upcoming Newsletter Events
 
-This website shows upcoming events from the
-[Lansing Codes API](https://github.com/lansingcodes/api)
-in lists that can be easily copied and pasted into a monthly newsletter.
+This website shows upcoming events from the public Firestore `events`
+collection in lists that can be copied into a monthly newsletter. The active
+[Lansing Codes website](https://github.com/lansingcodes/website) maintains the
+event collection.
+
+## Local development
+
+The site is served directly by GitHub Pages; no build step or deployment
+change is needed. Run `npm start` for a local static server. Use Node.js 24
+and run `npm ci && npm test` to check the month query, Firestore response
+parsing, and safe event link rendering. `vendor/moment.min.js` is the local
+Moment 2.31.0 browser build, with its license alongside it.
 
 ## Code of Conduct
 

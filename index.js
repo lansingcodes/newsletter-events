@@ -1,60 +1,43 @@
-/* global firebase, moment */
-const firebaseConfig = {
-  apiKey: 'AIzaSyCMw8mZ1D1GAYpeotAqVCaYAMtn3URVOok',
-  authDomain: 'lansing-codes.firebaseapp.com',
-  databaseURL: 'https://lansing-codes.firebaseio.com',
-  projectId: 'lansing-codes',
-  storageBucket: 'lansing-codes.appspot.com',
-  messagingSenderId: '647280182517',
-  appId: '1:647280182517:web:779f72d0b90c0dd4'
-}
-const firestore = firebase.initializeApp(firebaseConfig).firestore()
+import { fetchEvents } from './events.js'
+import { appendEvent } from './render.js'
 
-function compileEventList (monthMoment, nameId, listId) {
+const moment = window.moment
+const LANSING_TIME_ZONE = 'America/Detroit'
+const latestLoadByList = new Map()
+
+async function compileEventList(monthMoment, nameId, listId) {
+  const loadId = (latestLoadByList.get(listId) || 0) + 1
+  latestLoadByList.set(listId, loadId)
   const dateFormat = document.getElementById('date-format').value
-  const firstOfMonth = monthMoment.startOf('month').startOf('day')
-  const endOfMonth = moment(firstOfMonth).endOf('month').endOf('day')
+  const firstOfMonth = monthMoment.clone().startOf('month')
+  const endOfMonth = monthMoment.clone().endOf('month')
 
   const monthNameEl = document.getElementById(nameId)
-  monthNameEl.innerHTML = firstOfMonth.format('MMMM')
+  monthNameEl.textContent = firstOfMonth.format('MMMM')
 
   const eventListEl = document.getElementById(listId)
-  eventListEl.innerHTML = ''
+  eventListEl.replaceChildren()
 
-  firestore
-    .collection('events')
-    .where('startTime', '>=', firstOfMonth.valueOf())
-    .where('startTime', '<=', endOfMonth.valueOf())
-    .orderBy('startTime', 'asc')
-    .get()
-    .then(snapshot => {
-      snapshot.forEach(doc => {
-        const event = doc.data()
-        const when = moment(event.startTime)
-          .format(dateFormat)
-          .replace(':00', '')
-        const link = `<a href="${event.url}">${event.name}</a>`
-        const li = document.createElement('li')
-        li.innerHTML = `<code>${when}</code> - ${link}`
-        eventListEl.appendChild(li)
-      })
-    })
+  try {
+    const events = await fetchEvents(firstOfMonth.valueOf(), endOfMonth.valueOf())
+    if (latestLoadByList.get(listId) !== loadId) return
+    for (const event of events) {
+      const when = moment.tz(event.startTime, LANSING_TIME_ZONE).format(dateFormat).replace(':00', '')
+      appendEvent(eventListEl, event, when)
+    }
+  } catch (error) {
+    if (latestLoadByList.get(listId) !== loadId) return
+    const message = document.createElement('li')
+    message.textContent = 'Events could not be loaded. Please try again.'
+    eventListEl.append(message)
+    console.error('Failed to load newsletter events:', error)
+  }
 }
 
-function refreshEventLists () {
-  compileEventList(
-    moment().add(1, 'month'),
-    'next-month-name',
-    'next-month-event-list'
-  )
-  compileEventList(
-    moment(),
-    'current-month-name',
-    'current-month-event-list'
-  )
+function refreshEventLists() {
+  compileEventList(moment.tz(LANSING_TIME_ZONE).add(1, 'month'), 'next-month-name', 'next-month-event-list')
+  compileEventList(moment.tz(LANSING_TIME_ZONE), 'current-month-name', 'current-month-event-list')
 }
 
-const refreshFormatButton = document.getElementById('refresh-format')
-refreshFormatButton.addEventListener('click', refreshEventLists)
-
+document.getElementById('refresh-format').addEventListener('click', refreshEventLists)
 refreshEventLists()
