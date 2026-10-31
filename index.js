@@ -3,6 +3,7 @@ import { appendEvent } from './render.js'
 import { buildNewsletterEmail } from './email-template.js'
 
 const moment = window.moment
+const LANSING_TIME_ZONE = 'America/Detroit'
 const latestLoadByList = new Map()
 const emailMonths = new Map()
 let emailContent = null
@@ -36,8 +37,8 @@ async function compileEventList(monthMoment, nameId, listId) {
   const loadId = (latestLoadByList.get(listId) || 0) + 1
   latestLoadByList.set(listId, loadId)
   const dateFormat = document.getElementById('date-format').value
-  const firstOfMonth = monthMoment.startOf('month').startOf('day')
-  const endOfMonth = moment(firstOfMonth).endOf('month').endOf('day')
+  const firstOfMonth = monthMoment.clone().startOf('month')
+  const endOfMonth = monthMoment.clone().endOf('month')
 
   const monthNameEl = document.getElementById(nameId)
   monthNameEl.textContent = firstOfMonth.format('MMMM')
@@ -52,7 +53,7 @@ async function compileEventList(monthMoment, nameId, listId) {
     if (latestLoadByList.get(listId) !== loadId) return
     const emailEvents = []
     for (const event of events) {
-      const when = moment(event.startTime).format(dateFormat).replace(':00', '')
+      const when = moment.tz(event.startTime, LANSING_TIME_ZONE).format(dateFormat).replace(':00', '')
       appendEvent(eventListEl, event, when)
       emailEvents.push({ event, when })
     }
@@ -70,8 +71,8 @@ async function compileEventList(monthMoment, nameId, listId) {
 }
 
 function refreshEventLists() {
-  compileEventList(moment().add(1, 'month'), 'next-month-name', 'next-month-event-list')
-  compileEventList(moment(), 'current-month-name', 'current-month-event-list')
+  compileEventList(moment.tz(LANSING_TIME_ZONE).add(1, 'month'), 'next-month-name', 'next-month-event-list')
+  compileEventList(moment.tz(LANSING_TIME_ZONE), 'current-month-name', 'current-month-event-list')
 }
 
 document.getElementById('refresh-format').addEventListener('click', refreshEventLists)
