@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { JSDOM } from 'jsdom'
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 test('older event loads cannot append stale dates or errors after a refresh', async () => {
   const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8')
