@@ -78,14 +78,15 @@ function refreshEventLists() {
 document.getElementById('refresh-format').addEventListener('click', refreshEventLists)
 document.getElementById('copy-email').addEventListener('click', async () => {
   if (!emailContent) return
+  const content = emailContent
   try {
     await navigator.clipboard.write([new ClipboardItem({
-      'text/html': new Blob([emailContent.html], { type: 'text/html' }),
-      'text/plain': new Blob([emailContent.text], { type: 'text/plain' }),
+      'text/html': new Blob([content.html], { type: 'text/html' }),
+      'text/plain': new Blob([content.text], { type: 'text/plain' }),
     })])
-    document.getElementById('email-status').textContent = 'Formatted email copied.'
+    if (emailContent === content) document.getElementById('email-status').textContent = 'Formatted email copied.'
   } catch {
-    document.getElementById('email-status').textContent = 'Clipboard access failed. Use Download HTML instead.'
+    if (emailContent === content) document.getElementById('email-status').textContent = 'Clipboard access failed. Use Download HTML instead.'
   }
 })
 document.getElementById('download-email').addEventListener('click', () => {

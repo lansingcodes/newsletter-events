@@ -32,7 +32,7 @@ function monthRows ({ title, events }) {
   const rows = events.length
     ? events.map(eventRow).join('')
     : '<tr><td style="padding:0 28px 16px;font:15px/1.5 Arial,Helvetica,sans-serif;color:#41627b">No events are currently scheduled.</td></tr>'
-  return `<tr><td style="padding:18px 28px 14px;font:700 22px/1.3 Arial,Helvetica,sans-serif;color:#123b5d">${htmlEscape(title)}</td></tr>${rows}`
+  return `<tr><td style="padding:18px 28px 14px"><h2 style="margin:0;font:700 22px/1.3 Arial,Helvetica,sans-serif;color:#123b5d">${htmlEscape(title)}</h2></td></tr>${rows}`
 }
 
 export function buildNewsletterEmail (months) {
