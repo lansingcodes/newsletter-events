@@ -5,13 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Lansing Codes Monthly Events</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <h1>Lansing Codes Monthly Events</h1>
 
   <label for="date-format">Date Format:</label>
   <input type="text" id="date-format" size="40" value="Do (ddd) h:mm a">
-  <input type="button" id="refresh-format" value="Update">
+  <button type="button" id="refresh-format">Update</button>
   <aside>
     <a href="https://momentjs.com/docs/#/displaying/format/">
       Moment.js Formatting Documentation
@@ -34,7 +35,7 @@
     <button id="copy-email" type="button" disabled>Copy formatted email</button>
     <button id="download-email" type="button" disabled>Download HTML</button>
     <p id="email-status" role="status">Loading events for the email preview…</p>
-    <iframe id="email-preview" title="Branded newsletter email preview" sandbox="" style="display:block;width:100%;max-width:660px;height:700px;border:1px solid #a9bac8;background:#fff"></iframe>
+    <iframe id="email-preview" title="Branded newsletter email preview" sandbox=""></iframe>
   </section>
 
   <script src="./vendor/moment.min.js"></script>
