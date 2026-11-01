@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node --test",
+    "check": "node --check index.js && node --check email-template.js && html-validate index.html && npm test",
     "start": "python3 -m http.server 8000 --bind 127.0.0.1"
   },
   "repository": {
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/lansingcodes/newsletter-events#readme",
   "devDependencies": {
+    "html-validate": "10.8.0",
     "jsdom": "^30.1.3",
     "moment": "^2.31.0",
     "moment-timezone": "0.6.5"
