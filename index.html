@@ -28,6 +28,15 @@
     <ul id="current-month-event-list"></ul>
   </section>
 
+  <section aria-labelledby="email-preview-heading">
+    <h2 id="email-preview-heading">Branded email preview</h2>
+    <p>Ready-to-paste HTML for Mailchimp, with inline styling and a plain-text alternative.</p>
+    <button id="copy-email" type="button" disabled>Copy formatted email</button>
+    <button id="download-email" type="button" disabled>Download HTML</button>
+    <p id="email-status" role="status">Loading events for the email preview…</p>
+    <iframe id="email-preview" title="Branded newsletter email preview" sandbox="" style="display:block;width:100%;max-width:660px;height:700px;border:1px solid #a9bac8;background:#fff"></iframe>
+  </section>
+
   <script src="./vendor/moment.min.js"></script>
   <script src="./vendor/moment-timezone.min.js"></script>
   <script src="./vendor/moment-timezone-detroit.js"></script>

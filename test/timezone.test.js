@@ -50,6 +50,10 @@ test('Lansing month query and displayed times are stable outside Eastern time', 
     const list = document.getElementById('current-month-event-list').textContent
     assert.match(list, /1st \(Mon\) 12:30 am.*Month boundary/)
     assert.match(list, /14th \(Sun\) 3:30 am.*DST change/)
+    const email = document.getElementById('email-preview').srcdoc
+    assert.match(email, /March 2027/)
+    assert.match(email, /1st \(Mon\) 12:30 am/)
+    assert.match(email, /14th \(Sun\) 3:30 am/)
   } finally {
     globalThis.window = previous.window
     globalThis.document = previous.document
